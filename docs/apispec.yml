@@ -1,0 +1,122 @@
+openapi: 3.0.1
+info:
+  title: apfel API
+  description: '[ap]plication [f]or [e]vent [l]ogin'
+  contact:
+    name: VXKFL on GitHub
+    url: https://github.com/VXKFL
+  license:
+    name: MIT License
+    url: https://raw.githubusercontent.com/VXKFL/apfel/main/LICENSE
+  version: 1.0.0
+tags:
+- name: user
+  description: normal user interactions
+- name: admin
+  description: what only an admin can do
+paths:
+  /api/register:
+    post:
+      tags:
+      - user
+      summary: Register a new user
+      requestBody:
+        description: User Registration Information
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - email
+              - password
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  example: email@example.com
+                password:
+                  type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                properties:
+                  code:
+                    type: string
+                    example: 98c23206-048b-4ed7-b332-72808610e4ee
+        400:
+          description: Invalid input data
+          content: {}
+      security:
+        - admin_login: {}
+  /api/event/{EventID}:
+    get:
+      tags:
+      - admin
+      summary: Get all users registered for an event
+      parameters:
+      - in: path
+        name: EventID
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of Event
+      responses:
+        200:
+          description: Return list of checked in users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: User Name
+        404:
+          description: Event not found
+          content: {}
+    post:
+      tags:
+      - admin
+      summary: Note attendance of a user
+      parameters:
+      - in: path
+        name: EventID
+        schema:
+          type: integer
+        required: true
+        description: Numeric ID of Event
+      requestBody:
+        description: User Registration Information
+        content:
+          application/json:
+            schema:
+              required:
+              - code
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: 98c23206-048b-4ed7-b332-72808610e4ee
+      responses:
+        200:
+          description: Success
+          content: {}
+        400:
+          description: Invalid input data
+          content: {}
+        404:
+          description: No user assigned to code
+          content: {}
+      security:
+        - admin_login: {}
+
+components:
+  securitySchemes:
+    admin_login: logged in as admin
