@@ -55,7 +55,8 @@ paths:
           description: Invalid input data
           content: {}
       security:
-        - admin_login: {}
+      - admin_login:
+        - readadmin
   /api/event/{EventID}:
     get:
       tags:
@@ -115,8 +116,11 @@ paths:
           description: No user assigned to code
           content: {}
       security:
-        - admin_login: {}
+      - admin_login:
+        - readadmin
 
 components:
   securitySchemes:
-    admin_login: logged in as admin
+    admin_login:
+      type: http
+      scheme: BasicAuth
