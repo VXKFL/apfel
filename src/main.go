@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	log.Printf("Connecting to Database...")
+
 	err := database.Connect()
 	if err != nil {
 		log.Fatal(err)
