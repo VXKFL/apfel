@@ -11,10 +11,16 @@ import (
 )
 
 type UserT struct {
-    UserID int
+    UserID int      `json:",omitempty"`
     Name string
 	Email string
-	Password string
+	Password string `json:",omitempty"`
+}
+
+type AttendantT struct {
+    Code string
+    UserID int
+    CheckedIn bool
 }
 
 var database *sql.DB
@@ -129,4 +135,41 @@ func Register(user UserT) (string, error) {
 	}
 
     return code, nil
+}
+
+func GetAttendants() ([]UserT, error) {
+    if database == nil {
+		return nil, errors.New("GetAttendance: not connected to database")
+	}
+
+    // Verify connection to database
+	err := database.Ping()
+	if err != nil {
+		database.Close()
+		return nil, DBError{ "GetAttendance: pinging database failed", err }
+	}
+
+    rows, err := database.Query(
+        `SELECT U.Name, U.Email FROM users U
+        WHERE U.UserID in (
+            SELECT A.UserID from attendance A
+            WHERE A.CheckedIn = True
+        )`)
+	if err != nil {
+		return nil, DBError{ "GetAttendance: querying attendance from database failed", err }
+	}
+
+    var attendants []UserT
+    for rows.Next() {
+        var user UserT
+
+        err := rows.Scan(&user.Name, &user.Email)
+		if err != nil {
+			return nil, DBError{ "GetAttendance: parsing attendance failed", err }
+		}
+
+		attendants = append(attendants, user)
+	}
+
+    return attendants, nil
 }
