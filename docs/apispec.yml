@@ -54,8 +54,6 @@ paths:
         400:
           description: Invalid input data
           content: {}
-      security:
-        - admin_login: {}
   /api/event/{EventID}:
     get:
       tags:
@@ -81,6 +79,9 @@ paths:
         404:
           description: Event not found
           content: {}
+      security:
+      - admin_login:
+        - readadmin
     post:
       tags:
       - admin
