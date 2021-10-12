@@ -32,6 +32,11 @@ func Connect() error {
         return DBError{ "Connect: connecting to database failed", err }
     }
 
+    err = database.Ping()
+    if err != nil {
+        return DBError{ "Connect: pinging database failed", err }
+    }
+
     return nil
 }
 
