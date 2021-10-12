@@ -1,3 +1,12 @@
 * {
   font-family: Helvetica, Arial, sans-serif;
 }
+
+table.table, table.table td, table.table th {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+table.table td, table.table th {
+  padding: 0.2em;
+}

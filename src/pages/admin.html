@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<title>admin | apfel</title>
+	<link rel="stylesheet" href="static/styles.css">
+	<script type="text/javascript" src="static/alpine.min.js" defer></script>
+	<script type="text/javascript" src="static/admin-interactive.js"></script>
+</head>
+<body onload="loadAttendance()">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody x-data="{}">
+			<template x-for="user in $store.data.users">
+				<tr>
+					<td x-text="user"></td>
+				</tr>
+			</template>
+		</tbody>
+	</table>
+</body>
+</html>
