@@ -13,7 +13,7 @@ import (
 	"apfel/database"
 	"log"
 	"net/http"
-	sw "apfel/go"
+	sw "apfel/webserver"
 )
 
 func main() {
