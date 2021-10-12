@@ -139,14 +139,14 @@ func Register(user UserT) (string, error) {
 
 func GetAttendants() ([]UserT, error) {
     if database == nil {
-		return nil, errors.New("GetAttendance: not connected to database")
+		return nil, errors.New("GetAttendants: not connected to database")
 	}
 
     // Verify connection to database
 	err := database.Ping()
 	if err != nil {
 		database.Close()
-		return nil, DBError{ "GetAttendance: pinging database failed", err }
+		return nil, DBError{ "GetAttendants: pinging database failed", err }
 	}
 
     rows, err := database.Query(
@@ -156,7 +156,7 @@ func GetAttendants() ([]UserT, error) {
             WHERE A.CheckedIn = True
         )`)
 	if err != nil {
-		return nil, DBError{ "GetAttendance: querying attendance from database failed", err }
+		return nil, DBError{ "GetAttendants: querying attendance from database failed", err }
 	}
 
     var attendants []UserT
@@ -165,7 +165,7 @@ func GetAttendants() ([]UserT, error) {
 
         err := rows.Scan(&user.Name, &user.Email)
 		if err != nil {
-			return nil, DBError{ "GetAttendance: parsing attendance failed", err }
+			return nil, DBError{ "GetAttendants: parsing attendance failed", err }
 		}
 
 		attendants = append(attendants, user)
