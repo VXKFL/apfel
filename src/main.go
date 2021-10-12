@@ -11,9 +11,9 @@ package main
 
 import (
 	"apfel/database"
+	sw "apfel/webserver"
 	"log"
 	"net/http"
-	sw "apfel/webserver"
 )
 
 func main() {
@@ -25,6 +25,11 @@ func main() {
 	}
 
 	defer database.Close()
+
+	err = database.Initialize()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Printf("Starting server on :8080 ...")
 
