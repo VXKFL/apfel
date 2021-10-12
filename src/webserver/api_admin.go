@@ -12,6 +12,7 @@ import (
 	"apfel/database"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -39,6 +40,31 @@ func ApiEventEventIDGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func ApiEventEventIDPost(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Code string
+	}
+
+	bytes, _ := ioutil.ReadAll(r.Body)
+	err := json.Unmarshal(bytes, &input)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "unparsable JSON")
+		return
+	}
+
+	err = database.SetAttendant(input.Code)
+	if err != nil {
+		switch err.(type) {
+		case database.BadRequest:
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintf(w, err.Error())
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+			log.Printf("/api/event/{EventID}: post failed with error '%s'", err.Error())
+		}
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 }
