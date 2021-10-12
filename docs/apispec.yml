@@ -26,9 +26,9 @@ paths:
           application/json:
             schema:
               required:
-              - name
-              - email
-              - password
+              - Name
+              - Email
+              - Password
               type: object
               properties:
                 name:
@@ -46,7 +46,7 @@ paths:
               schema:
                 type: object
                 required:
-                - code
+                - Code
                 properties:
                   code:
                     type: string
@@ -99,7 +99,7 @@ paths:
           application/json:
             schema:
               required:
-              - code
+              - Code
               type: object
               properties:
                 code:

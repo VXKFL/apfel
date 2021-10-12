@@ -6,8 +6,16 @@ import (
 	"os"
 
 	// loading postgresql driver
+	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 )
+
+type UserT struct {
+    UserID int
+    Name string
+	Email string
+	Password string
+}
 
 var database *sql.DB
 
@@ -65,7 +73,7 @@ func Initialize() error {
 
 	_, err = database.Exec(
         `CREATE TABLE IF NOT EXISTS attendance (
-       	Code varchar PRIMARY KEY,
+       	Code uuid PRIMARY KEY,
         UserID integer REFERENCES users (UserID) ON DELETE CASCADE,
         CheckedIn boolean)`)
     if err != nil {
@@ -84,4 +92,41 @@ func Close() error {
     database.Close()
 
     return nil
+}
+
+func Register(user UserT) (string, error) {
+    if database == nil {
+		return "", errors.New("Register: not connected to database")
+	}
+
+    // Verify connection to database
+	err := database.Ping()
+	if err != nil {
+		database.Close()
+		return "", DBError{ "Register: pinging database failed", err }
+	}
+
+    u, err := uuid.NewRandom()
+	code := u.String()
+    if err != nil || code == "" {
+		return "", errors.New("Register: could not create uuid")
+	}
+
+    // add user to users table
+	err = database.QueryRow(
+		`INSERT INTO users (Name, Email, Password) VALUES ($1, $2, $3) RETURNING UserID`,
+    user.Name, user.Email, user.Password).Scan(&user.UserID)
+	if err != nil {
+		return "",DBError{ "Register: inserting user into users table failed", err }
+	}
+
+    // add user to attendance table
+	err = database.QueryRow(
+		`INSERT INTO attendance (Code, UserID, CheckedIn) VALUES ($1, $2, $3)`,
+    code, user.UserID, false).Err()
+	if err != nil {
+		return "",DBError{ "Register: inserting user into attendance table failed", err }
+	}
+
+    return code, nil
 }
