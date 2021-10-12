@@ -9,7 +9,6 @@
 package swagger
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -39,11 +38,10 @@ func NewRouter() *mux.Router {
 			Handler(handler)
 	}
 
-	return router
-}
+	handlerFiles := http.FileServer(http.Dir("./static"))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", handlerFiles))
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World!")
+	return router
 }
 
 var routes = Routes{
