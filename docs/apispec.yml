@@ -26,17 +26,17 @@ paths:
           application/json:
             schema:
               required:
-              - name
-              - email
-              - password
+              - Name
+              - Email
+              - Password
               type: object
               properties:
-                name:
+                Name:
                   type: string
-                email:
+                Email:
                   type: string
                   example: email@example.com
-                password:
+                Password:
                   type: string
       responses:
         200:
@@ -46,9 +46,9 @@ paths:
               schema:
                 type: object
                 required:
-                - code
+                - Code
                 properties:
-                  code:
+                  Code:
                     type: string
                     example: 98c23206-048b-4ed7-b332-72808610e4ee
         400:
@@ -74,8 +74,16 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
-                  description: User Name
+                  type: object
+                  required:
+                  - Name
+                  - Email
+                  properties:
+                    Name:
+                      type: string
+                    Email:
+                      type: string
+                      example: email@example.com
         404:
           description: Event not found
           content: {}
@@ -99,7 +107,7 @@ paths:
           application/json:
             schema:
               required:
-              - code
+              - Code
               type: object
               properties:
                 code:
