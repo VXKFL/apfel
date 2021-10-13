@@ -195,7 +195,7 @@ func SetAttendant(code string) error {
     // Check validity of code(uuid) format
     _, err = uuid.Parse(code)
 	if err != nil {
-		return InternalServerError{ "SetAttendant: malformed code(uuid)", err }
+		return BadRequest{ "SetAttendant: malformed code(uuid)", err }
 	}
 
     res, err := database.Exec(`UPDATE attendance SET CheckedIn = True WHERE Code = $1`, code)
@@ -208,7 +208,7 @@ func SetAttendant(code string) error {
         return InternalServerError{ "SetAttendant: Reading number of affected rows failed, update status unknown", err }
     }
     if n == 0 {
-        return InternalServerError{ "SetAttendant: No user with specified uuid found", nil }
+        return BadRequest{ "SetAttendant: No user with specified uuid found", nil }
     }
 
     return nil
