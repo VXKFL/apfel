@@ -1,9 +1,14 @@
 document.addEventListener('alpine:init', () => {
     Alpine.store('data', {
-        init() {
-            this.users = ["User1", "User2", "User3"]
-        },
-
         users: [],
-    })
-})
+    });
+    loadAttendance();
+});
+
+function loadAttendance() {
+    axios.get("api/event/1")
+        .then((response) => {
+            let users = response.data.map((userinfo) => userinfo.Name)
+            Alpine.store("data").users = users
+        })
+}
