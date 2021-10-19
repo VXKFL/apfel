@@ -35,7 +35,13 @@ func ApiRegisterPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := json.Marshal(code)
+	responseStruct := struct {
+		Code string
+	} {
+		code,
+	}
+
+	resp, err := json.Marshal(responseStruct)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, "internal server error")
