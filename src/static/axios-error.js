@@ -1,11 +1,11 @@
 function axiosErrorHandler(action) {
 	return (error) => {
-		if("response" in err) { // if the error is axios-generated
-			alert("Fehler beim " + action + "!\n"+axiosErrorString(err.response));
+		if("response" in error) { // if the error is axios-generated
+			alert("Fehler beim " + action + "!\n"+axiosErrorString(error.response));
 		} else {
-			alert("Fehler beim " + action + "!\n"+err.message);
+			alert("Fehler beim " + action + "!\n"+error.message);
 		}
-		console.error(err);
+		console.error(error);
 	}
 }
 
