@@ -1,8 +1,8 @@
 package swagger
 
 import (
-	"net/http"
 	"html/template"
+	"net/http"
 )
 
 //serve main page
@@ -18,6 +18,16 @@ func Index(w http.ResponseWriter, r *http.Request) {
 //serve admin page
 func Admin(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.New("admin.html").ParseFiles("pages/admin.html"))
+
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		panic(err)
+	}
+}
+
+//serve register page
+func Register(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.New("register.html").ParseFiles("pages/register.html"))
 
 	err := tmpl.Execute(w, nil)
 	if err != nil {

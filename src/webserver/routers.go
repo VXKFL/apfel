@@ -60,6 +60,13 @@ var routes = Routes{
 	},
 
 	Route{
+		"Register",
+		"GET",
+		"/register",
+		Register,
+	},
+
+	Route{
 		"ApiEventEventIDGet",
 		strings.ToUpper("Get"),
 		"/api/event/{EventID}",
