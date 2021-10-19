@@ -7,7 +7,7 @@ registerForm.addEventListener("submit", (e)=>{
 	submitButton.disabled = true;
 	setTimeout(() => submitButton.disabled = false, 2000);
 
-	const json = buildJson(registerForm);
+	let json = buildJson(registerForm);
 
 	const validationResult = validateJson(json)
 
@@ -15,6 +15,8 @@ registerForm.addEventListener("submit", (e)=>{
 		window.alert(validationResult)
 		return
 	}
+
+	delete json.Password2
 
 	axios.post("api/register", json)
 		.then( (response) => {
