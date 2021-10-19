@@ -34,3 +34,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 }
+
+//serve admin/scan page
+func AdminScan(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.New("admin-scan.html").ParseFiles("pages/admin-scan.html"))
+
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		panic(err)
+	}
+}

@@ -12,3 +12,8 @@ function loadAttendance() {
             Alpine.store("data").users = users
         })
 }
+
+document.getElementById('scan-button').addEventListener('click', () => {
+    console.log("click")
+    window.location.replace("/admin/scan")
+});

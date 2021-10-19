@@ -10,3 +10,14 @@ table.table, table.table td, table.table th {
 table.table td, table.table th {
   padding: 0.2em;
 }
+
+#camDisplay canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#camDisplay {
+  width: 100%;
+  max-width: 85vh;
+}

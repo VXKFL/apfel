@@ -67,6 +67,13 @@ var routes = Routes{
 	},
 
 	Route{
+		"AdminScan",
+		"GET",
+		"/admin/scan",
+		AdminScan,
+	},
+
+	Route{
 		"ApiEventEventIDGet",
 		strings.ToUpper("Get"),
 		"/api/event/{EventID}",
