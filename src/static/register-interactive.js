@@ -1,3 +1,8 @@
+if (window.localStorage.getItem("Code")) {
+	window.alert("Du bist bereits registriert.")
+	window.location.replace("/")
+}
+
 const registerForm = document.getElementById("registerForm");
 registerForm.addEventListener("submit", (e)=>{
 	e.preventDefault();
@@ -9,19 +14,22 @@ registerForm.addEventListener("submit", (e)=>{
 
 	let json = buildJson(registerForm);
 
-	const validationResult = validateJson(json)
+	const validationResult = validateJson(json);
 
 	if (validationResult != "") {
-		window.alert(validationResult)
-		return
+		window.alert(validationResult);
+		return;
 	}
 
 	delete json.Password2
 
 	axios.post("api/register", json)
 		.then( (response) => {
-			console.log(response.data)
+			const code = response.data.Code;
+			window.localStorage.setItem("Code", code);
+			window.location.replace("/");
 		})
+		.catch(axiosErrorHandler("Registrieren"));
 });
 
 function buildJson(form) {
